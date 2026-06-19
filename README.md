@@ -15,10 +15,10 @@ Tech stack:
 ## Running MariaDB with Docker:
 
 A `docker-compose-dev.yml` file is provided in the root directory to easily spin up the database environment. To start the MariaDB container, run the following command in your terminal:
-  # docker compose -f docker-compose-dev.yml up -d
+  ```docker compose -f docker-compose-dev.yml up -d```
 
 
-# Database Access (Optional)
+## Database Access (Optional)
 
 If you want to inspect or manage the database using a GUI client like **HeidiSQL** or **DBeaver** create a new connection with the following parameters:
 
