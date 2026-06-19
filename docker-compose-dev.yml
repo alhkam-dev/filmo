@@ -6,7 +6,7 @@ services:
       MARIADB_USER: db
       MARIADB_PASSWORD: db
       MARIADB_ROOT_PASSWORD: dbpw
-      MARIADB_DATABASE: db
+      MARIADB_DATABASE: films
     ports:
       - "3308:3306"
     volumes:
