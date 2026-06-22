@@ -10,10 +10,7 @@
     <packaging>pom</packaging>
     <name>Filmo</name>
     <description>Backend API for movie rating management</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
+
     <developers>
         <developer>
             <id>alhkam-dev</id>
@@ -24,15 +21,10 @@
             </roles>
         </developer>
     </developers>
+
     <modules>
         <module>film-web</module>
     </modules>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
 
     <properties>
         <java.version>21</java.version>
@@ -85,6 +77,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <executions>
                     <execution>
                         <id>default-compile</id>
