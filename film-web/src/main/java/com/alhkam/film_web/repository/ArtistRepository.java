@@ -1,7 +1,7 @@
-package com.alhkam.film_web.repository.film;
+package com.alhkam.film_web.repository;
 
-import com.alhkam.film_web.domain.film.Artist;
-import com.alhkam.film_web.domain.film.ArtistType;
+import com.alhkam.film_web.domain.Artist;
+import com.alhkam.film_web.domain.ArtistType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.alhkam.film_web.domain.film;
+package com.alhkam.film_web.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

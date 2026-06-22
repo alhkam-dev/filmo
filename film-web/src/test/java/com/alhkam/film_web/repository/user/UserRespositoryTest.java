@@ -2,14 +2,17 @@ package com.alhkam.film_web.repository.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.alhkam.film_web.domain.user.Role;
-import com.alhkam.film_web.domain.user.User;
+import com.alhkam.film_web.domain.Role;
+import com.alhkam.film_web.domain.User;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import com.alhkam.film_web.repository.RoleRepository;
+import com.alhkam.film_web.repository.UserRespository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.alhkam.film_web.repository.film;
+package com.alhkam.film_web.repository;
 
-import com.alhkam.film_web.domain.film.Rating;
+import com.alhkam.film_web.domain.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

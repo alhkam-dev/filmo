@@ -1,4 +1,4 @@
-package com.alhkam.film_web.domain.film;
+package com.alhkam.film_web.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,4 +40,8 @@ public class Film {
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "poster_id", referencedColumnName = "id", nullable = false)
   private Poster poster;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User createdBy;
 }

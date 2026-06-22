@@ -46,6 +46,8 @@ CREATE TABLE films (
     release_year INT NOT NULL,
     director_id BIGINT NOT NULL,
     poster_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (director_id) REFERENCES artists(id),
     FOREIGN KEY (poster_id) REFERENCES posters(id)
 );

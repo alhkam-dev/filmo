@@ -1,6 +1,6 @@
-package com.alhkam.film_web.repository.user;
+package com.alhkam.film_web.repository;
 
-import com.alhkam.film_web.domain.user.Role;
+import com.alhkam.film_web.domain.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

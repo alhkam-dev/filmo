@@ -1,4 +1,4 @@
-package com.alhkam.film_web.domain.user;
+package com.alhkam.film_web.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,7 +25,7 @@ public class User {
   @Column(nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 60)
   private String password;
 
   @Column(nullable = false, unique = true)
