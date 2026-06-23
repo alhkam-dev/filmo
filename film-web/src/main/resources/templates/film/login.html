@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - Filmo</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card p-4 shadow">
+                <h2 class="text-center mb-4" th:text="#{login.title}">Sign In</h2>
+
+                <div th:if="${loginError}" class="alert alert-danger" th:text="${login.error}"></div>
+
+                <div th:if="${loginLogout}" class="alert alert-success" th:text="${login.logout}"></div>
+
+                <form th:action="@{/login}" method="POST">
+
+                    <div class="mb-3">
+                        <label for="usernameOrEmail" class="form-label" th:text="{login.usernameOrEmail}">User or
+                            Email</label>
+                        <input type="text" id="usernameOrEmail" name="username" class="form-control"
+                               th:placeholder="#{login.placeholder.usernameOrEmail}" required autofocus>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label" th:text="#{login.password}">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="********"
+                               required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100" th:text="#{login.submit}">Sign In</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a th:href="@{/register}" th:text="#{login.noAccount}">Don't have an account? Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

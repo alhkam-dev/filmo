@@ -1,37 +1,35 @@
 package com.alhkam.film_web.dto;
 
+import com.alhkam.film_web.validation.ValidDate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 
 @Builder
 public record UserRegisterDTO(
     Long id,
 
-    @NotBlank(message = "must not be blank")
+    @NotBlank(message = "{register.validation.username.notblank}")
     String username,
 
-    @NotBlank(message = "must not be blank")
+    @NotBlank(message = "{register.validation.password.notblank}")
     String password,
 
-    @NotBlank(message = "must not be blank")
+    @NotBlank(message = "{register.validation.passwordConfirm.notblank}")
     String passwordConfirm,
 
-    @NotBlank(message = "must not be blank")
-    @Email(message = "must be a valid email adress")
+    @NotBlank(message = "{register.validation.email.notblank}")
+    @Email(message = "{register.validation.email.format}")
     String email,
 
-    @NotBlank(message = "must not be blank")
+    @NotBlank(message = "{register.validation.name.notblank}")
     String name,
 
-    @NotBlank(message = "must not be blank")
+    @NotBlank(message = "{register.validation.surname.notblank}")
     String surname,
 
-    @NotNull(message = "must not be null")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    LocalDate dateOfBirth
+    @NotNull(message = "{register.validation.dateOfBirth.notblank}")
+    @ValidDate(message = "{register.validation.dateOfBirth.format}")
+    String dateOfBirth
 ) {}

@@ -45,7 +45,7 @@ public class RegisterController {
       userService.registerUser(userRegisterDTO);
 
       model.addAttribute("userRegistrationSuccesMessage", true);
-      model.addAttribute("user", UserRegisterDTO.builder().build());
+      model.addAttribute("userRegisterDTO", UserRegisterDTO.builder().build());
     } catch (UsernameAlreadyExistsException e) {
       bindingResult.rejectValue("username", "error.duplicateUsername", e.getMessage());
       return "register";

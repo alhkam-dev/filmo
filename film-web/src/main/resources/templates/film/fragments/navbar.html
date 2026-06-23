@@ -1,0 +1,54 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}">Filmo</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <li sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{/films/create}" th:text="#{navbar.createFilm}">Create Film</a>
+                </li>
+
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/films/search}" th:text="#{navbar.searchFilm}">Search Films</a>
+                </li>
+
+                <li sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{/artists/create}" th:text="#{navbar.createArtist}">Create Artist</a>
+                </li>
+
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline m-0 p-0">
+                        <button type="submit"
+                                class="nav-link btn btn-link text-start shadow-none border-0 align-baseline"
+                                style="background: none;" th:text="#{navbar.logout}">Logout
+                        </button>
+                    </form>
+                </li>
+
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a class="nav-link" th:href="@{/login}" th:text="#{navbar.login}">Login</a>
+                </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a class="nav-link" th:href="@{/register}" th:text="#{navbar.register}">Register</a>
+                </li>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{''(lang='en')}"
+                           th:if="${#locale.language == 'es'}">English</a>
+                        <a class="nav-link" href="#" th:href="@{''(lang='es')}"
+                           th:if="${#locale.language == 'en'}">Castellano</a>
+                    </li>
+                </ul>
+
+            </ul>
+        </div>
+    </div>
+</nav>

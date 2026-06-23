@@ -10,3 +10,5 @@ spring:
       ddl-auto: validate
   application:
     name: Filmo
+  messages:
+    basename: messages/messages

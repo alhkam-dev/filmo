@@ -12,9 +12,13 @@ import com.alhkam.film_web.service.SecurityService;
 import com.alhkam.film_web.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,19 +30,23 @@ public class UserServiceImpl implements UserService {
   private final RoleRepository roleRepository;
   private final SecurityService securityService;
 
+  private final ModelMapper modelMapper;
+
   @Override
   @Transactional(readOnly = true)
   public UserDTO findById(Long id) {
     return userRespository
         .findById(id)
-        .map(this::convertToDTO)
-        .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + id));
+        .map(user -> modelMapper.map(user, UserDTO.class))
+        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public Optional<UserDTO> findByUsernameOrEmailWithRoles(String usernameOrEmail) {
-    return userRespository.findByUsernameOrEmailWithRoles(usernameOrEmail).map(this::convertToDTO);
+  public Optional<Pair<UserDTO, String>> findUserAndPasswordByUsernameOrEmail(
+      String usernameOrEmail) {
+    return userRespository
+        .findByUsernameOrEmailWithRoles(usernameOrEmail)
+        .map(user -> Pair.of(modelMapper.map(user, UserDTO.class), user.getPassword()));
   }
 
   @Override
@@ -68,11 +76,11 @@ public class UserServiceImpl implements UserService {
       throw new IllegalArgumentException("Username and Email are strictly required");
     }
 
-    if (userRespository.existsByUsername(userRegisterDTO.username())) {
+    if (this.existsByUsername(userRegisterDTO.username())) {
       throw new UsernameAlreadyExistsException("Username is already in use");
     }
 
-    if (userRespository.existsByEmail(userRegisterDTO.email())) {
+    if (this.existsByEmail(userRegisterDTO.email())) {
       throw new EmailAlreadyExistsException("Email is already in use");
     }
 
@@ -81,7 +89,10 @@ public class UserServiceImpl implements UserService {
     userToRegister.setEmail(userRegisterDTO.email().trim().toLowerCase());
     userToRegister.setName(userRegisterDTO.name().trim());
     userToRegister.setSurname(userRegisterDTO.surname().trim());
-    userToRegister.setDateOfBirth(userRegisterDTO.dateOfBirth());
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate localDateParsed = LocalDate.parse(userRegisterDTO.dateOfBirth(), formatter);
+    userToRegister.setDateOfBirth(localDateParsed);
 
     userToRegister.setPassword(securityService.encodePassword(userRegisterDTO.password()));
 
@@ -94,18 +105,5 @@ public class UserServiceImpl implements UserService {
 
     userRespository.save(userToRegister);
     return true;
-  }
-
-  private UserDTO convertToDTO(User user) {
-    return UserDTO.builder()
-        .id(user.getId())
-        .username(user.getUsername())
-        .email(user.getEmail())
-        .name(user.getName())
-        .surname(user.getSurname())
-        .dateOfBirth(user.getDateOfBirth())
-        .created(user.getCreated())
-        .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
-        .build();
   }
 }

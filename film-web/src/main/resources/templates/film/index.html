@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{film/fragments/head :: header(title = 'Filmo Web Application')}"></head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<nav th:replace="~{film/fragments/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1">
+    <div class="row py-5">
+        <div class="col-12">
+            <h1 class="border-bottom pb-2" th:text="#{index.title}">Filmo - Web Application</h1>
+
+            <p class="lead mt-4 text-secondary" th:text="#{index.welcome}">
+                Welcome to the Filmo Web Application!
+            </p>
+
+            <div class="mt-4 row">
+                <div class="col-12 col-lg-8 col-xl-7">
+                    <img th:src="@{/images/absolute-cinema.png}"
+                         class="img-fluid rounded shadow-sm" />
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{film/fragments/footer :: footer}"></footer>
+
+<script th:replace="~{film/fragments/scripts}"></script>
+
+</body>
+</html>

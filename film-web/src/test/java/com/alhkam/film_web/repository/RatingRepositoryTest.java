@@ -1,4 +1,4 @@
-package com.alhkam.film_web.repository.film;
+package com.alhkam.film_web.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,6 @@ import com.alhkam.film_web.domain.Rating;
 import java.util.List;
 import java.util.Optional;
 
-import com.alhkam.film_web.repository.RatingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
