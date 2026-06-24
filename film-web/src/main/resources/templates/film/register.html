@@ -3,13 +3,17 @@
 <head th:replace="~{film/fragments/head :: header(title = 'Filmo - Registration')}"></head>
 <body class="d-flex flex-column h-100 bg-light">
 
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{film/fragments/navbar :: navbar}"></div>
 
 <main class="container my-5 flex-grow-1">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="card p-4 shadow-sm">
                 <h2 class="text-center mb-4" th:text="#{register.heading}">Register user</h2>
+
+                <div class="alert alert-success" role="alert" th:if="${userRegistrationSuccesMessage}">
+                    <span th:text="#{register.success.message}">User registered successfully!</span>
+                </div>
 
                 <form th:action="@{/register}" th:object="${userRegisterDTO}" method="POST">
 
@@ -75,14 +79,16 @@
                 </form>
 
                 <div class="text-center mt-3">
-                    <a th:href="@{/login}" th:text="#{register.hasAccount}">¿Ya tienes cuenta? Inicia sesión aquí</a>
+                    <a th:href="@{/login}" th:text="#{register.hasAccount}">Do you already have an account? Log in here</a>
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-<div th:replace="~{fragments/layout :: footer}"></div>
+<footer th:replace="~{film/fragments/footer :: footer}"></footer>
+
+<script th:replace="~{film/fragments/scripts}"></script>
 
 </body>
 </html>

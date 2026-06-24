@@ -80,7 +80,7 @@ class UserServiceImplTest {
       UserDTO result = userService.findById(1L);
 
       assertThat(result).isNotNull();
-      assertThat(result.username()).isEqualTo("user");
+      assertThat(result.getUsername()).isEqualTo("user");
 
       verify(userRespository, times(1)).findById(1L);
     }
@@ -92,7 +92,7 @@ class UserServiceImplTest {
 
       assertThatThrownBy(() -> userService.findById(99L))
           .isInstanceOf(EntityNotFoundException.class)
-          .hasMessageContaining("Usuario no encontrado con id: 99");
+          .hasMessageContaining("User not found with id: 99");
     }
   }
 

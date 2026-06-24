@@ -17,6 +17,6 @@ public class LoginController {
         model.addAttribute("loginError", error != null);
         model.addAttribute("loginLogout", logout != null);
 
-      return "login";
+      return "film/login";
     }
 }

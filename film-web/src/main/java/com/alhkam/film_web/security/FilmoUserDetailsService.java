@@ -39,7 +39,7 @@ public class FilmoUserDetailsService implements UserDetailsService {
 
   private UserDetails toUserDetails(UserDTO userDTO, String password) {
     return new CustomUserDetails(
-        userDTO, password, userDTO.roles().stream().map(SimpleGrantedAuthority::new).toList());
+        userDTO, password, userDTO.getRoles().stream().map(SimpleGrantedAuthority::new).toList());
   }
 
   // Clase interna para tener en cuenta tanto el email como el username en la sesión
@@ -47,13 +47,11 @@ public class FilmoUserDetailsService implements UserDetailsService {
   public static class CustomUserDetails extends User {
 
     private final String email;
-    private final String username;
 
     public CustomUserDetails(
         UserDTO userDTO, String password, Collection<? extends GrantedAuthority> authorities) {
-      super(userDTO.username(), password, authorities);
-      this.email = userDTO.email();
-      this.username = userDTO.username();
+      super(userDTO.getUsername(), password, authorities);
+      this.email = userDTO.getEmail();
     }
   }
 }

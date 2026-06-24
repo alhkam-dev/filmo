@@ -1,7 +1,8 @@
-package com.alhkam.film_web.config;
+package com.alhkam.film_web.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +25,7 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/film/films-create", "/film/films-edit", "/film/artists-create")
                     .hasRole("ADMIN")
-                    .requestMatchers("/film/**", "/flight/**")
+                    .requestMatchers("/film/**")
                     .authenticated()
                     .anyRequest()
                     .authenticated())
@@ -43,8 +44,8 @@ public class SecurityConfig {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
                     .permitAll())
-        .csrf(csrf -> csrf.configure(httpSecurity))
-        .cors(cors -> cors.configure(httpSecurity))
+        .csrf(Customizer.withDefaults())
+        .cors(Customizer.withDefaults())
         .build();
   }
 

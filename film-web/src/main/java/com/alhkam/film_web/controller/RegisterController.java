@@ -21,24 +21,26 @@ public class RegisterController {
 
   @GetMapping("/register")
   public String showRegisterForm(Model model) {
-    model.addAttribute("user", UserRegisterDTO.builder().build());
-    return "register";
+    model.addAttribute("userRegisterDTO", UserRegisterDTO.builder().build());
+    return "film/register";
   }
 
   @PostMapping("/register")
   public String registerUser(
-      @Valid @ModelAttribute("user") UserRegisterDTO userRegisterDTO,
+      @Valid @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO,
       BindingResult bindingResult,
       Model model) {
 
     if (bindingResult.hasErrors()) {
-      return "register";
+      return "film/register";
     }
 
     if (!userRegisterDTO.password().equals(userRegisterDTO.passwordConfirm())) {
       bindingResult.rejectValue(
-          "passwordConfirm", "error.passwordConfirm", "Passwords do not match");
-      return "register";
+          "passwordConfirm",
+          "register.validation.passwordConfirm.noMatch",
+          "Passwords do not match");
+      return "film/register";
     }
 
     try {
@@ -47,13 +49,13 @@ public class RegisterController {
       model.addAttribute("userRegistrationSuccesMessage", true);
       model.addAttribute("userRegisterDTO", UserRegisterDTO.builder().build());
     } catch (UsernameAlreadyExistsException e) {
-      bindingResult.rejectValue("username", "error.duplicateUsername", e.getMessage());
-      return "register";
+      bindingResult.rejectValue("username", "register.error.duplicateUsername", e.getMessage());
+      return "film/register";
     } catch (EmailAlreadyExistsException e) {
-      bindingResult.rejectValue("email", "error.duplicateEmail", e.getMessage());
-      return "register";
+      bindingResult.rejectValue("email", "register.error.duplicateEmail", e.getMessage());
+      return "film/register";
     }
 
-    return "register";
+    return "film/register";
   }
 }

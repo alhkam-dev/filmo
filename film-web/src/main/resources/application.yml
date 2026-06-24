@@ -12,3 +12,4 @@ spring:
     name: Filmo
   messages:
     basename: messages/messages
+    encoding: UTF-8

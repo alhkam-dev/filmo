@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @WebMvcTest(RegisterController.class)
 @DisplayName("Tests para RegisterController")
@@ -49,18 +51,29 @@ class RegisterControllerTest {
 
     @Test
     @DisplayName("Muestra el formulario de registro de usuario vacío")
-    void givenGetRegisterRequest_whenShowRegisterForm_thenStatusOkAndReturnRegisterView() throws Exception {
-      mockMvc.perform(get("/register"))
+    void givenGetRegisterRequest_whenShowRegisterForm_thenStatusOkAndReturnRegisterView()
+        throws Exception {
+      MvcResult result =
+          mockMvc
+              .perform(get("/register"))
               .andExpect(status().isOk())
-              .andExpect(view().name("register"))
+              .andExpect(view().name("film/register"))
               .andExpect(model().attributeExists("userRegisterDTO"))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("username", nullValue())))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("email", nullValue())))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("password", nullValue())))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("passwordConfirm", nullValue())))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("name", nullValue())))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("surname", nullValue())))
-              .andExpect(model().attribute("userRegisterDTO", hasProperty("dateOfBirth", nullValue())));
+              .andReturn();
+
+      UserRegisterDTO dto =
+          (UserRegisterDTO)
+              Objects.requireNonNull(result.getModelAndView()).getModel().get("userRegisterDTO");
+
+      assertAll(
+          "Propiedades del DTO de registro vacío",
+          () -> assertNull(dto.username()),
+          () -> assertNull(dto.email()),
+          () -> assertNull(dto.password()),
+          () -> assertNull(dto.passwordConfirm()),
+          () -> assertNull(dto.name()),
+          () -> assertNull(dto.surname()),
+          () -> assertNull(dto.dateOfBirth()));
     }
   }
 }
