@@ -8,19 +8,19 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
 
+            <ul class="navbar-nav align-items-center">
                 <li sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-item">
-                    <a class="nav-link" th:href="@{/films/create}" th:text="#{navbar.createFilm}">Create Film</a>
+                    <a class="nav-link" th:href="@{/films/films-create}" th:text="#{navbar.createFilm}">Create Film</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link" th:href="@{/films/search}" th:text="#{navbar.searchFilm}">Search Films</a>
+                    <a class="nav-link" th:href="@{/films/films-search}" th:text="#{navbar.searchFilm}">Search Films</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-item">
-                    <a class="nav-link" th:href="@{/artists/create}" th:text="#{navbar.createArtist}">Create Artist</a>
+                    <a class="nav-link" th:href="@{/artists/artists-create}" th:text="#{navbar.createArtist}">Create Artist</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()" class="nav-item">
@@ -38,17 +38,17 @@
                 <li sec:authorize="isAnonymous()" class="nav-item">
                     <a class="nav-link" th:href="@{/register}" th:text="#{navbar.register}">Register</a>
                 </li>
-
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{''(lang='en')}"
-                           th:if="${#locale.language == 'es'}">English</a>
-                        <a class="nav-link" href="#" th:href="@{''(lang='es')}"
-                           th:if="${#locale.language == 'en'}">Castellano</a>
-                    </li>
-                </ul>
-
             </ul>
+
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{''(lang='en')}"
+                       th:if="${#locale.language == 'es'}">English</a>
+                    <a class="nav-link" href="#" th:href="@{''(lang='es')}"
+                       th:if="${#locale.language == 'en'}">Castellano</a>
+                </li>
+            </ul>
+
         </div>
     </div>
 </nav>

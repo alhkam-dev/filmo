@@ -1,0 +1,6 @@
+.required-label::after {
+    content: " *";
+    color: #dc3545; /* El rojo standard de Bootstrap para peligro/errores */
+    font-weight: bold;
+    margin-left: 2px;
+}

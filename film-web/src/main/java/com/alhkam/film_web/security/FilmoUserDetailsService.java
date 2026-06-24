@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +39,11 @@ public class FilmoUserDetailsService implements UserDetailsService {
   }
 
   private UserDetails toUserDetails(UserDTO userDTO, String password) {
+    List<SimpleGrantedAuthority> authorities =
+        userDTO.getRoles().stream().map(rol -> new SimpleGrantedAuthority("ROLE_" + rol)).toList();
+
     return new CustomUserDetails(
-        userDTO, password, userDTO.getRoles().stream().map(SimpleGrantedAuthority::new).toList());
+        userDTO, password, authorities);
   }
 
   // Clase interna para tener en cuenta tanto el email como el username en la sesión

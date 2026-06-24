@@ -3,9 +3,12 @@ package com.alhkam.film_web.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import java.time.LocalDate;
+import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Locale;
 
 public class DateValidator implements ConstraintValidator<ValidDate, String> {
 
@@ -16,16 +19,20 @@ public class DateValidator implements ConstraintValidator<ValidDate, String> {
       return true;
     }
 
-    // ResolverStyle.STRICT obliga a Java a validar estrictamente el calendario real
+    // ResolverStyle.STRICT obliga a Java a validar estrictamente el calendario real.
+    // Usar uuuu que significa año de la era actual. yyyy necesita que indice si antes o despues de
+    // cristo al ser STRICT y también utilizar IsoChronology.INSTANCE
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("dd/MM/yyyy").withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter.ofPattern("dd/MM/uuuu")
+            .withChronology(IsoChronology.INSTANCE)
+            .withResolverStyle(ResolverStyle.STRICT);
 
     try {
-      // Intentamos parsear la cadena. Si es un 31/04/2026 lanzará una excepción
-      formatter.parse(value);
-      return true; // La fecha es real y existe en el calendario
+      LocalDate.parse(value, formatter);
+      return true;
     } catch (DateTimeParseException e) {
-      return false; // Fecha imposible o formato incorrecto
+      System.out.println("DEBUG VALIDATOR - Error parseando: '" + value + "' -> " + e.getMessage());
+      return false;
     }
   }
 }

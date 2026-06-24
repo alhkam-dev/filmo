@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class RegisterController {
   @GetMapping("/register")
   public String showRegisterForm(Model model) {
     model.addAttribute("userRegisterDTO", UserRegisterDTO.builder().build());
-    return "film/register";
+    return "filmo/register";
   }
 
   @PostMapping("/register")
@@ -32,7 +33,7 @@ public class RegisterController {
       Model model) {
 
     if (bindingResult.hasErrors()) {
-      return "film/register";
+      return "filmo/register";
     }
 
     if (!userRegisterDTO.password().equals(userRegisterDTO.passwordConfirm())) {
@@ -40,22 +41,24 @@ public class RegisterController {
           "passwordConfirm",
           "register.validation.passwordConfirm.noMatch",
           "Passwords do not match");
-      return "film/register";
+      return "filmo/register";
     }
 
     try {
       userService.registerUser(userRegisterDTO);
 
+
       model.addAttribute("userRegistrationSuccesMessage", true);
       model.addAttribute("userRegisterDTO", UserRegisterDTO.builder().build());
+
     } catch (UsernameAlreadyExistsException e) {
       bindingResult.rejectValue("username", "register.error.duplicateUsername", e.getMessage());
-      return "film/register";
+      return "filmo/register";
     } catch (EmailAlreadyExistsException e) {
       bindingResult.rejectValue("email", "register.error.duplicateEmail", e.getMessage());
-      return "film/register";
+      return "filmo/register";
     }
 
-    return "film/register";
+    return "filmo/register";
   }
 }

@@ -21,7 +21,7 @@ public class GlobalMvcExceptionHandler {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("error", errorDTO);
-        modelAndView.setViewName("/film/error");
+        modelAndView.setViewName("filmo/error");
 
         return modelAndView;
     }

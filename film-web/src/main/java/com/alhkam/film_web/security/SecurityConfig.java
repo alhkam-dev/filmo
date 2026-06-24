@@ -1,5 +1,7 @@
 package com.alhkam.film_web.security;
 
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -18,22 +20,32 @@ public class SecurityConfig {
     return httpSecurity
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**")
+                auth.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR)
+                    .permitAll()
+                    .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**")
                     .permitAll()
                     .requestMatchers("/", "/index", "/login", "/register", "/error")
                     .permitAll()
                     .requestMatchers(
-                        "/film/films-create", "/film/films-edit", "/film/artists-create")
+                        "/filmo/films-create", "/filmo/films-edit", "/filmo/artists-create")
                     .hasRole("ADMIN")
-                    .requestMatchers("/film/**")
+                    .requestMatchers("/filmo/**")
                     .authenticated()
                     .anyRequest()
                     .authenticated())
+        .exceptionHandling(
+            exceptions ->
+                exceptions.authenticationEntryPoint(
+                    (request, response, authException) -> {
+                      // Si el usuario no está autenticado e intenta ir a una ruta que no existe,
+                      // forzamos al contenedor web a lanzar un 404 real en la respuesta.
+                      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    }))
         .formLogin(
             form ->
                 form.loginPage("/login")
                     .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/film", true)
+                    .defaultSuccessUrl("/filmo", true)
                     .failureUrl("/login?error=true")
                     .permitAll())
         .logout(

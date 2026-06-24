@@ -57,7 +57,7 @@ class RegisterControllerTest {
           mockMvc
               .perform(get("/register"))
               .andExpect(status().isOk())
-              .andExpect(view().name("film/register"))
+              .andExpect(view().name("filmo/register"))
               .andExpect(model().attributeExists("userRegisterDTO"))
               .andReturn();
 

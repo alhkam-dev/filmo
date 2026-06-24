@@ -10,4 +10,6 @@ import lombok.*;
 public class ErrorDTO {
   private String url;
   private String exception;
+  private String motivo;
+  private String metodo;
 }

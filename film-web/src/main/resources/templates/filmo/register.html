@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" class="h-100">
-<head th:replace="~{film/fragments/head :: header(title = 'Filmo - Registration')}"></head>
+<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Registration')}"></head>
+
 <body class="d-flex flex-column h-100 bg-light">
 
-<div th:replace="~{film/fragments/navbar :: navbar}"></div>
+<div th:replace="~{filmo/fragments/navbar :: navbar}"></div>
 
 <main class="container my-5 flex-grow-1">
     <div class="row justify-content-center">
@@ -18,58 +19,58 @@
                 <form th:action="@{/register}" th:object="${userRegisterDTO}" method="POST">
 
                     <div class="mb-3">
-                        <label for="username" class="form-label" th:text="#{register.username}">Username</label>
+                        <label for="username" class="form-label required-label" th:text="#{register.username}">Username</label>
                         <input type="text" id="username" th:field="*{username}" class="form-control"
-                               th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'" required autofocus>
+                               th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'" autofocus>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}"
                              th:errors="*{username}"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label" th:text="#{register.email}">Email</label>
+                        <label for="email" class="form-label required-label" th:text="#{register.email}">Email</label>
                         <input type="email" id="email" th:field="*{email}" class="form-control"
-                               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" required>
+                               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label" th:text="#{register.password}">Password</label>
+                        <label for="password" class="form-label required-label" th:text="#{register.password}">Password</label>
                         <input type="password" id="password" th:field="*{password}" class="form-control"
-                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" required>
+                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
                              th:errors="*{password}"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="passwordConfirm" class="form-label" th:text="#{register.passwordConfirm}">Password
+                        <label for="passwordConfirm" class="form-label required-label" th:text="#{register.passwordConfirm}">Password
                             confirmation</label>
                         <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control"
-                               th:classappend="${#fields.hasErrors('passwordConfirm')} ? 'is-invalid'" required>
+                               th:classappend="${#fields.hasErrors('passwordConfirm')} ? 'is-invalid'">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('passwordConfirm')}"
                              th:errors="*{passwordConfirm}"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="name" class="form-label" th:text="#{register.name}">Name</label>
+                        <label for="name" class="form-label required-label" th:text="#{register.name}">Name</label>
                         <input type="text" id="name" th:field="*{name}" class="form-control"
-                               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" required>
+                               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" >
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="surname" class="form-label" th:text="#{register.surname}">Surname</label>
+                        <label for="surname" class="form-label required-label" th:text="#{register.surname}">Surname</label>
                         <input type="text" id="surname" th:field="*{surname}" class="form-control"
-                               th:classappend="${#fields.hasErrors('surname')} ? 'is-invalid'" required>
+                               th:classappend="${#fields.hasErrors('surname')} ? 'is-invalid'">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('surname')}"
                              th:errors="*{surname}"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="dateOfBirth" class="form-label" th:text="#{register.dateOfBirth}">Date of
+                        <label for="dateOfBirth" class="form-label required-label" th:text="#{register.dateOfBirth}">Date of
                             birth</label>
                         <input type="text" id="dateOfBirth" th:field="*{dateOfBirth}" class="form-control"
                                placeholder="dd/MM/yyyy"
-                               th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid'" required>
+                               th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid'">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('dateOfBirth')}"
                              th:errors="*{dateOfBirth}"></div>
                     </div>
@@ -86,9 +87,9 @@
     </div>
 </main>
 
-<footer th:replace="~{film/fragments/footer :: footer}"></footer>
+<footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
 
-<script th:replace="~{film/fragments/scripts}"></script>
+<script th:replace="~{filmo/fragments/scripts}"></script>
 
 </body>
 </html>

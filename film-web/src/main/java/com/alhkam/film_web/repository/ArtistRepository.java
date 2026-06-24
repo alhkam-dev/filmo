@@ -10,5 +10,8 @@ import java.util.List;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
+  boolean existsByNameIgnoreCaseAndSurnameIgnoreCaseAndType(
+      String name, String surname, ArtistType type);
+
   List<Artist> findByType(ArtistType type);
 }

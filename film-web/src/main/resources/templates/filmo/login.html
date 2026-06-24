@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{film/fragments/head :: header(title = 'Filmo - Log In')}"></head>
+<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Log In')}"></head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
 <main class="flex-grow-1 d-flex align-items-center">
@@ -11,9 +11,9 @@
                 <div class="card p-4 shadow">
                     <h2 class="text-center mb-4" th:text="#{login.title}">Sign In</h2>
 
-                    <div th:if="${loginError}" class="alert alert-danger" th:text="${login.error}"></div>
+                    <div th:if="${loginError}" class="alert alert-danger" th:text="#{login.error}"></div>
 
-                    <div th:if="${loginLogout}" class="alert alert-success" th:text="${login.logout}"></div>
+                    <div th:if="${loginLogout}" class="alert alert-success" th:text="#{login.logout}"></div>
 
                     <form th:action="@{/login}" method="POST">
 
@@ -43,9 +43,9 @@
     </div>
 </main>
 
-<footer th:replace="~{film/fragments/footer :: footer}"></footer>
+<footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
 
-<script th:replace="~{film/fragments/scripts}"></script>
+<script th:replace="~{filmo/fragments/scripts}"></script>
 
 </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{filmo/fragments/head :: header('Filmo - Error')}"></head>
+
+<body>
+
+<nav th:replace="~{filmo/fragments/navbar :: navbar}"></nav>
+
+<div class="container">
+    <div class="row py-5 mb-3">
+        <h1 class="border-bottom" th:text="#{error.webError}">An error has occurred</h1>
+    </div>
+
+    <div class="alert alert-danger" role="alert" th:if="${error != null}">
+        <dl>
+            <dt class="col-sm-3" th:text="#{error.label.url}">URL de la solicitud:</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-dark me-2" th:text="${error.metodo}">GET</span>
+                <span th:text="${error.url}">http://localhost:8080/pepe</span>
+            </dd>
+
+            <dt th:text="#{error.label.exception}">Exception type:</dt>
+            <dd th:text="${error.exception}">exception</dd>
+
+            <dt th:text="#{error.label.reason}">Error reason:</dt>
+            <dd th:text="${error.motivo}">motivo</dd>
+        </dl>
+    </div>
+
+    <footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
+
+    <script th:replace="~{filmo/fragments/scripts}"></script>
+
+</body>
+</html>
