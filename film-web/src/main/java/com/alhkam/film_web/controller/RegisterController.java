@@ -30,7 +30,8 @@ public class RegisterController {
   public String registerUser(
       @Valid @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO,
       BindingResult bindingResult,
-      Model model) {
+      Model model,
+      RedirectAttributes redirectAttributes) {
 
     if (bindingResult.hasErrors()) {
       return "filmo/register";
@@ -47,9 +48,9 @@ public class RegisterController {
     try {
       userService.registerUser(userRegisterDTO);
 
+      redirectAttributes.addFlashAttribute("userRegistrationSuccesMessage", true);
 
-      model.addAttribute("userRegistrationSuccesMessage", true);
-      model.addAttribute("userRegisterDTO", UserRegisterDTO.builder().build());
+      return "redirect:/register";
 
     } catch (UsernameAlreadyExistsException e) {
       bindingResult.rejectValue("username", "register.error.duplicateUsername", e.getMessage());
@@ -58,7 +59,5 @@ public class RegisterController {
       bindingResult.rejectValue("email", "register.error.duplicateEmail", e.getMessage());
       return "filmo/register";
     }
-
-    return "filmo/register";
   }
 }

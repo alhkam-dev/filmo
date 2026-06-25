@@ -37,7 +37,7 @@ CREATE TABLE artists (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     surname VARCHAR(255) NOT NULL,
-    type VARCHAR(30) NOT NULL
+    type VARCHAR(30)
 );
 
 CREATE TABLE films (

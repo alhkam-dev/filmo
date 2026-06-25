@@ -12,42 +12,42 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/artists")
 @RequiredArgsConstructor
 public class ArtistController {
 
-    private final ArtistService artistService;
+  private final ArtistService artistService;
 
-    @GetMapping("/artists-create")
-    public String showArtistCreateForm(Model model) {
-        model.addAttribute("artistCreationDTO", ArtistCreationDTO.builder().build());
-        return "filmo/artists/artists-create";
+  @GetMapping("/artists-create")
+  public String showArtistCreateForm(Model model) {
+    model.addAttribute("artistCreationDTO", ArtistCreationDTO.builder().build());
+    return "filmo/artists/artists-create";
+  }
+
+  @PostMapping("/artists-create")
+  public String createArtist(
+      @Valid @ModelAttribute("artistCreationDTO") ArtistCreationDTO artistCreationDTO,
+      BindingResult bindingResult,
+      Model model,
+      RedirectAttributes redirectAttributes) {
+
+    if (bindingResult.hasErrors()) {
+      return "filmo/artists/artists-create";
     }
 
-    @PostMapping("/artists-create")
-    public String createArtist(
-            @Valid @ModelAttribute("artistCreationDTO") ArtistCreationDTO artistCreationDTO,
-            BindingResult bindingResult,
-            Model model) {
+    try {
+      artistService.createArtist(artistCreationDTO);
 
-        if (bindingResult.hasErrors()) {
-            return "filmo/artists/artists-create";
-        }
+      redirectAttributes.addFlashAttribute("artistCreationSuccesMessage", true);
 
-        try {
-            artistService.createArtist(artistCreationDTO);
+      return "redirect:/artists/artists-create";
 
-
-            model.addAttribute("artistCreationSuccesMessage", true);
-            model.addAttribute("artistCreationDTO", ArtistCreationDTO.builder().build());
-
-        } catch (ArtistAlreadyExistsException e) {
-            model.addAttribute("artistAlreadyExistsError", true);
-            return "filmo/artists/artists-create";
-        } 
-
-        return "filmo/artists/artists-create";
+    } catch (ArtistAlreadyExistsException e) {
+      model.addAttribute("artistAlreadyExistsError", true);
+      return "filmo/artists/artists-create";
     }
+  }
 }

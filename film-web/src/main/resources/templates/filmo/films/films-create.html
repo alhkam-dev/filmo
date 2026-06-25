@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Films creator')}"></head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{filmo/fragments/navbar :: navbar}"></nav>
+
+<main class="container my-5">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8"><h1 class="fw-bold mb-4" th:text="#{film.creation.heading}">Create film</h1>
+                <hr class="mb-4">
+
+                <div class="alert alert-success" role="alert" th:if="${movieSuccessMessage}">
+                    <span th:text="#{film.creation.success.message}">Film registered successfully!</span>
+                </div>
+
+                <div class="alert alert-danger" role="alert" th:if="${movieCreationError}">
+                    <span th:text="#{film.creation.error.message}">An error occurred during creation</span>
+                </div>
+
+                <form th:action="@{/films/films-create}" th:object="${filmCreationDTO}" method="POST"
+                      enctype="multipart/form-data">
+
+                    <div class="row mb-3 align-items-center">
+                        <label for="title" class="col-sm-3 col-form-label required-label"
+                               th:text="#{film.creation.label.title}">Title</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="title" th:field="*{title}" class="form-control">
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('title')}"
+                                 th:errors="*{title}"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center">
+                        <label for="releaseYear" class="col-sm-3 col-form-label required-label text-nowrap"
+                               th:text="#{film.creation.label.releaseYear}">Release year</label>
+                        <div class="col-sm-6">
+                            <input type="number" id="releaseYear" th:field="*{releaseYear}" class="form-control"
+                                   placeholder="YYYY">
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('releaseYear')}"
+                                 th:errors="*{releaseYear}"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center">
+                        <label for="directorId" class="col-sm-3 col-form-label required-label"
+                               th:text="#{film.creation.label.director}">Director</label>
+                        <div class="col-sm-6">
+                            <select id="directorId" th:field="*{directorId}" class="form-select"
+                                    th:if="${not #lists.isEmpty(directors)}">
+                                <option value="" th:text="#{film.creation.label.defaultDirector}">Select a director
+                                </option>
+                                <option th:each="dir : ${directors}" th:value="${dir.id}"
+                                        th:text="${dir.name} + ' ' + ${dir.surname}"></option>
+                            </select>
+
+                            <div th:if="${#lists.isEmpty(directors)}"
+                                 class="form-control bg-light text-muted small py-2">
+                                <span th:text="#{film.creation.text.noDirectorsAvailable}">No directors available.</span>
+                                <a th:href="@{/artists/artists-create}" class="fw-bold text-decoration-none"
+                                   th:text="#{film.creation.link.createDirector}">Create a director first</a>
+                            </div>
+
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('directorId')}"
+                                 th:errors="*{directorId}"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-start">
+                        <label class="col-sm-3 col-form-label required-label pt-2"
+                               th:text="#{film.creation.label.actors}">Actors</label>
+                        <div class="col-sm-6">
+                            <div class="form-control" style="max-height: 160px; overflow-y: auto;"
+                                 th:if="${not #lists.isEmpty(actors)}">
+                                <div th:each="act, stat : ${actors}" class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox"
+                                           th:id="${'actorIds' + stat.index}"
+                                           th:value="${act.id}"
+                                           th:field="*{actorIds}">
+                                    <label class="form-check-label" th:for="${'actorIds' + stat.index}"
+                                           th:text="${act.name} + ' ' + ${act.surname}">
+                                        Leonardo DiCaprio
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div th:if="${#lists.isEmpty(actors)}" class="form-control bg-light text-muted small py-2">
+                                <span th:text="#{film.creation.text.noActorsAvailable}">No actors available.</span>
+                                <a th:href="@{/artists/artists-create}" class="fw-bold text-decoration-none"
+                                   th:text="#{film.creation.link.createActor}">Create an actor first</a>
+                            </div>
+
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('actorIds')}"
+                                 th:errors="*{actorIds}"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 align-items-center">
+                        <label for="poster" class="col-sm-3 col-form-label required-label"
+                               th:text="#{film.creation.label.poster}">Poster</label>
+                        <div class="col-sm-6">
+                            <input type="file" id="poster" th:field="*{poster}" class="form-control" accept="image/*">
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('poster')}"
+                                 th:errors="*{poster}"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 offset-sm-3">
+                            <button type="submit" class="btn btn-primary px-4" th:text="#{film.creation.btn.send}">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
+
+<script th:replace="~{filmo/fragments/scripts}"></script>
+
+</body>
+</html>
