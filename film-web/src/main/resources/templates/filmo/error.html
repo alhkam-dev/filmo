@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
 
 <head th:replace="~{filmo/fragments/head :: header('Filmo - Error')}"></head>
 
-<body>
+<body class="bg-light d-flex flex-column min-vh-100">
 
 <nav th:replace="~{filmo/fragments/navbar :: navbar}"></nav>
 
-<div class="container">
-    <div class="row py-5 mb-3">
-        <h1 class="border-bottom" th:text="#{error.webError}">An error has occurred</h1>
+<main class="container my-5 flex-grow-1">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="border-bottom pb-2" th:text="#{error.webError}">An error has occurred</h1>
+        </div>
     </div>
 
-    <div class="alert alert-danger" role="alert" th:if="${error != null}">
-        <dl>
-            <dt class="col-sm-3" th:text="#{error.label.url}">URL de la solicitud:</dt>
-            <dd class="col-sm-9">
-                <span class="badge bg-dark me-2" th:text="${error.metodo}">GET</span>
-                <span th:text="${error.url}">http://localhost:8080/pepe</span>
-            </dd>
+    <div class="row justify-content-center">
+        <div class="col-12">
 
-            <dt th:text="#{error.label.exception}">Exception type:</dt>
-            <dd th:text="${error.exception}">exception</dd>
+            <div class="alert alert-danger shadow-sm p-4" role="alert" th:if="${error != null}">
+                <dl class="row mb-0">
 
-            <dt th:text="#{error.label.reason}">Error reason:</dt>
-            <dd th:text="${error.motivo}">motivo</dd>
-        </dl>
+                    <dt class="col-sm-3 fw-bold" th:text="#{error.label.url}">URL de la solicitud:</dt>
+                    <dd class="col-sm-9">
+                        <span class="badge bg-dark me-2" th:text="${error.method}">GET</span>
+                        <code class="text-danger" th:text="${error.url}">http://localhost:8080/pepe</code>
+                    </dd>
+
+                    <dt class="col-sm-3 fw-bold mt-2 mt-sm-0" th:text="#{error.label.exception}">Exception type:</dt>
+                    <dd class="col-sm-9 mt-sm-0" th:text="${error.exception}">exception</dd>
+
+                    <dt class="col-sm-3 fw-bold mt-2 mt-sm-0" th:text="#{error.label.reason}">Error reason:</dt>
+                    <dd class="col-sm-9 mt-sm-0" th:text="${error.motive}">motive</dd>
+
+                </dl>
+            </div>
+
+        </div>
     </div>
+</main>
 
-    <footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
+<footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
 
-    <script th:replace="~{filmo/fragments/scripts}"></script>
+<script th:replace="~{filmo/fragments/scripts}"></script>
 
 </body>
 </html>

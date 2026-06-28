@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Film details')}"></head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{filmo/fragments/navbar :: navbar}"></nav>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+
+            <div class="mb-4">
+                <div th:if="${ratingSuccessMessage}" class="alert alert-success py-2 px-3 shadow-sm border-0 rounded">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span th:text="#{__${ratingSuccessMessage}__}">Success Message</span>
+                </div>
+
+                <div th:if="${ratingErrorMessage}" class="alert alert-danger py-2 px-3 shadow-sm border-0 rounded">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span th:text="#{__${ratingErrorMessage}__}">Error Message</span>
+                </div>
+
+                <div th:if="${validationError}" class="alert alert-warning py-2 px-3 shadow-sm border-0 rounded">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <span th:text="${validationError}">Validation Error</span>
+                </div>
+            </div>
+
+            <div class="row" th:object="${filmDetailsDTO}">
+                <div class="col-md-4 mb-4 text-center">
+                    <img th:if="*{posterResourceId != null}"
+                         th:src="@{/filmo/posters/{id}(id=*{posterResourceId})}"
+                         class="img-fluid rounded shadow poster-detail-img">
+
+                    <img th:if="*{posterResourceId == null}"
+                         th:src="@{/images/no-poster.webp}"
+                         class="img-fluid rounded shadow text-muted poster-detail-img">
+                </div>
+
+                <div class="col-md-8">
+                    <div class="d-flex align-items-baseline mb-1">
+                        <h1 class="fw-bold mb-1 me-2" th:text="*{title}">Film Title</h1>
+
+                        <span class="text-muted fs-3 fw-normal">
+                            (<span th:text="*{averageRating}">--</span>)
+                        </span>
+                    </div>
+                    <p class="text-muted fs-5 mb-4">
+                        <span th:text="#{film.details.text.releaseYear}">Released in</span>
+                        <strong th:text="*{releaseYear}">2026</strong>
+                    </p>
+
+                    <hr class="mb-4">
+
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-primary" th:text="#{film.details.label.director}">Director</h5>
+                        <p class="fs-5" th:text="*{directorFullName}">John Doe</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-primary" th:text="#{film.details.label.actors}">Cast</h5>
+
+                        <ul class="list-inline fs-5" th:if="${not #sets.isEmpty(filmDetailsDTO.actorsFullNames)}">
+                            <li th:each="actorFullName : *{actorsFullNames}" class="list-inline-item me-3">
+                                <span class="badge bg-light text-dark border py-2 px-3 mb-2">
+                                    <i class="bi bi-person-fill text-muted me-1"></i>
+                                    <span th:text="${actorFullName}">Actor Name</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <div class="mb-4">
+                        <div th:if="${userRatingScore != null}" class="fs-5 text-muted">
+                            <span th:text="#{film.details.label.yourRating}">Tu valoración:</span>
+                            <strong class="text-warning">
+                                <span th:text="${userRatingScore}">4</span> ★
+                            </strong>
+                        </div>
+
+                        <div th:if="${userRatingScore == null}">
+                            <h5 class="fw-bold text-primary" th:text="#{film.details.label.rate}">Rate this film</h5>
+
+                            <form th:action="@{/filmo/ratings/films/{filmId}(filmId=${filmDetailsDTO.id})}"
+                                  th:object="${ratingFormDTO}"
+                                  method="POST"
+                                  class="row g-2 align-items-center mt-2">
+
+                                <div class="col-auto">
+                                    <select th:field="*{score}" class="form-select">
+                                        <option value="" th:text="#{film.details.rate.select}">-- Select --</option>
+                                        <option value="1">1 ★</option>
+                                        <option value="2">2 ★★</option>
+                                        <option value="3">3 ★★★</option>
+                                        <option value="4">4 ★★★★</option>
+                                        <option value="5">5 ★★★★★</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary px-4"
+                                            th:text="#{film.details.rate.btn}">Rate
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+</main>
+
+<footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
+
+<script th:replace="~{filmo/fragments/scripts}"></script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:lang="${#locale.language}">
+<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Films search')}"></head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{filmo/fragments/navbar :: navbar}"></nav>
+
+<main class="container">
+    <div class="row mb-3 mt-5">
+        <div class="col">
+            <h1 class="fw-bold" th:text="#{films.search.title}">Search films</h1>
+        </div>
+    </div>
+
+    <hr class="mb-4">
+
+    <div class="alert alert-success" role="alert" th:if="${filmUpdateSuccessMessage}">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="#{film.edition.success.message}">Film updated successfully!</span>
+    </div>
+
+    <div th:if="${param.error != null and param.error[0] == 'notFound'}"
+         class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <strong th:text="#{films.search.edit.error}">Error!</strong>
+        <span th:text="#{films.search.edit.notExists}">The movie you are trying to edit or view no longer exists in the system.</span>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 col-lg-4">
+            <form th:action="@{/filmo/films/films-search}" method="get">
+                <div class="mb-2">
+                    <label for="title" class="form-label text-muted fw-semibold small"
+                           th:text="#{films.search.label.title}">Title</label>
+                    <div class="input-group">
+                        <input type="text"
+                               id="title"
+                               name="searchText"
+                               th:value="${param.searchText}"
+                               class="form-control"
+                               th:placeholder="#{films.search.title.placeholder}">
+                        <button class="btn btn-primary px-4" type="submit" th:text="#{films.search.button}">Send
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr class="text-muted opacity-25 mb-4">
+
+    <h3 class="text-secondary fs-5 fw-normal mb-4" th:if="${not #lists.isEmpty(filmsFound)}"
+        th:text="#{films.search.success}">Search results</h3>
+
+    <div class="alert alert-warning" th:if="${#lists.isEmpty(filmsFound)}" th:text="#{films.search.notFound}">
+        No films found matching your search criteria.
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5 pb-4"
+         th:if="${not #lists.isEmpty(filmsFound)}">
+
+        <div class="col" th:each="film : ${filmsFound}">
+            <div class="card movie-card shadow-sm h-100">
+
+                <img th:src="@{/filmo/posters/{id}(id=${film.posterResourceId})}"
+                     class="card-img-top poster-img">
+
+                <img th:if="*{film.posterResourceId == null}"
+                     th:src="@{/images/no-poster.webp}"
+                     class="card-img-top poster-img">
+
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div class="mb-3">
+                        <h5 class="card-title mb-1">
+                            <span th:text="${film.title}">Title of the film</span>
+                            <small class="text-muted" th:text="'(' + ${film.releaseYear} + ')'">(yyyy)</small>
+                        </h5>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a th:href="@{/filmo/films/films-details/{id}(id=${film.id})}"
+                           class="btn btn-outline-secondary btn-sm px-3"
+                           th:text="#{films.search.button.view}">View</a>
+
+                        <a th:href="@{/filmo/films/films-edit/{id}(id=${film.id})}"
+                           sec:authorize="hasRole('ADMIN')"
+                           class="btn btn-outline-primary btn-sm px-3"
+                           th:text="#{films.search.button.edit}">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{filmo/fragments/footer :: footer}"></footer>
+
+<script th:replace="~{filmo/fragments/scripts}"></script>
+
+</body>
+</html>

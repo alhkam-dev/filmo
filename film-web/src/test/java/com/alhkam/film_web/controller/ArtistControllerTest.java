@@ -46,7 +46,7 @@ class ArtistControllerTest {
   }
 
   @Nested
-  @DisplayName("Tests para GET /artists/artists-create")
+  @DisplayName("Tests para GET /filmo/artists/artists-create")
   class GetArtistCreateTest {
 
     @Test
@@ -55,7 +55,7 @@ class ArtistControllerTest {
         throws Exception {
       MvcResult result =
           mockMvc
-              .perform(get("/artists/artists-create"))
+              .perform(get("/filmo/artists/artists-create"))
               .andExpect(status().isOk())
               .andExpect(view().name("filmo/artists/artists-create"))
               .andExpect(model().attributeExists("artistCreationDTO"))
@@ -74,7 +74,7 @@ class ArtistControllerTest {
   }
 
   @Nested
-  @DisplayName("Tests para POST /artists/artists-create")
+  @DisplayName("Tests para POST /filmo/artists/artists-create")
   class PostArtistCreateTest {
 
     @Test
@@ -83,12 +83,12 @@ class ArtistControllerTest {
         throws Exception {
       mockMvc
           .perform(
-              post("/artists/artists-create")
+              post("/filmo/artists/artists-create")
                   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                   .flashAttr("artistCreationDTO", validArtistCreationDTO))
           .andExpect(status().is3xxRedirection())
-          .andExpect(redirectedUrl("/artists/artists-create"))
-          .andExpect(flash().attribute("artistCreationSuccesMessage", true));
+          .andExpect(redirectedUrl("/filmo/artists/artists-create"))
+          .andExpect(flash().attribute("artistCreationSuccessMessage", true));
 
       verify(artistService).createArtist(any(ArtistCreationDTO.class));
     }
@@ -104,7 +104,7 @@ class ArtistControllerTest {
 
       mockMvc
           .perform(
-              post("/artists/artists-create")
+              post("/filmo/artists/artists-create")
                   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                   .flashAttr("artistCreationDTO", validArtistCreationDTO))
           .andExpect(status().isOk()) // Al fallar vuelve a pintar la misma pantalla
@@ -118,7 +118,7 @@ class ArtistControllerTest {
         throws Exception {
       mockMvc
           .perform(
-              post("/artists/artists-create")
+              post("/filmo/artists/artists-create")
                   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                   // Forzamos campos inválidos usando params uno a uno para activar el DataBinder
                   .param("name", "") // Nombre vacío viola @NotBlank/@NotEmpty

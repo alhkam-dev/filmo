@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/artists")
+@RequestMapping("/filmo/artists")
 @RequiredArgsConstructor
 public class ArtistController {
 
@@ -41,9 +41,9 @@ public class ArtistController {
     try {
       artistService.createArtist(artistCreationDTO);
 
-      redirectAttributes.addFlashAttribute("artistCreationSuccesMessage", true);
+      redirectAttributes.addFlashAttribute("artistCreationSuccessMessage", true);
 
-      return "redirect:/artists/artists-create";
+      return "redirect:/filmo/artists/artists-create";
 
     } catch (ArtistAlreadyExistsException e) {
       model.addAttribute("artistAlreadyExistsError", true);

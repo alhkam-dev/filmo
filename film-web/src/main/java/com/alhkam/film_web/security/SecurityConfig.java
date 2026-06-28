@@ -27,7 +27,9 @@ public class SecurityConfig {
                     .requestMatchers("/", "/index", "/login", "/register", "/error")
                     .permitAll()
                     .requestMatchers(
-                        "/filmo/films-create", "/filmo/films-edit", "/filmo/artists-create")
+                        "/filmo/films/films-create",
+                        "/filmo/films/films-edit",
+                        "/filmo/artists/artists-create")
                     .hasRole("ADMIN")
                     .requestMatchers("/filmo/**")
                     .authenticated()
@@ -37,9 +39,16 @@ public class SecurityConfig {
             exceptions ->
                 exceptions.authenticationEntryPoint(
                     (request, response, authException) -> {
-                      // Si el usuario no está autenticado e intenta ir a una ruta que no existe,
-                      // forzamos al contenedor web a lanzar un 404 real en la respuesta.
-                      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                      String uri = request.getRequestURI();
+
+                      // Si el usuario intentaba ir a la zona privada de la app, le mandamos al
+                      // login
+                      if (uri.startsWith("/filmo")) {
+                        response.sendRedirect(request.getContextPath() + "/login");
+                      } else {
+                        // Si ha escrito cualquier otra ruta que no existe, forzamos error 404
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                      }
                     }))
         .formLogin(
             form ->

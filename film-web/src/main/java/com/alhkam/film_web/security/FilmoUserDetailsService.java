@@ -42,19 +42,20 @@ public class FilmoUserDetailsService implements UserDetailsService {
     List<SimpleGrantedAuthority> authorities =
         userDTO.getRoles().stream().map(rol -> new SimpleGrantedAuthority("ROLE_" + rol)).toList();
 
-    return new CustomUserDetails(
-        userDTO, password, authorities);
+    return new CustomUserDetails(userDTO, password, authorities);
   }
 
   // Clase interna para tener en cuenta tanto el email como el username en la sesión
   @Getter
   public static class CustomUserDetails extends User {
 
+    private final Long id;
     private final String email;
 
     public CustomUserDetails(
         UserDTO userDTO, String password, Collection<? extends GrantedAuthority> authorities) {
       super(userDTO.getUsername(), password, authorities);
+      this.id = userDTO.getId();
       this.email = userDTO.getEmail();
     }
   }

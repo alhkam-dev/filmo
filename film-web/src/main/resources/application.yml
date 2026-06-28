@@ -13,3 +13,11 @@ spring:
   messages:
     basename: messages/messages
     encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+filmo:
+  posters:
+    upload-dir: ../../film-app-working-files/posters

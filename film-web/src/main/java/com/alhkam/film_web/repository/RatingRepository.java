@@ -13,6 +13,9 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
   boolean existsByUserIdAndFilmId(Long userId, Long filmId);
 
+  @Query("SELECT r.score FROM Rating r WHERE r.userId = :userId AND r.filmId = :filmId")
+  Optional<Integer> findScoreByUserIdAndFilmId(@Param("userId") Long userId, @Param("filmId") Long filmId);
+
   @Query("SELECT AVG(r.score) FROM Rating r WHERE r.filmId = :filmId")
   Optional<Double> getAverageScoreByFilmId(@Param("filmId") Long filmId);
 }

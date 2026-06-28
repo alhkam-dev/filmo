@@ -12,15 +12,15 @@
 
             <ul class="navbar-nav align-items-center">
                 <li sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-item">
-                    <a class="nav-link" th:href="@{/films/films-create}" th:text="#{navbar.createFilm}">Create Film</a>
+                    <a class="nav-link" th:href="@{/filmo/films/films-create}" th:text="#{navbar.createFilm}">Create Film</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link" th:href="@{/films/films-search}" th:text="#{navbar.searchFilm}">Search Films</a>
+                    <a class="nav-link" th:href="@{/filmo/films/films-search}" th:text="#{navbar.searchFilm}">Search Films</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="nav-item">
-                    <a class="nav-link" th:href="@{/artists/artists-create}" th:text="#{navbar.createArtist}">Create Artist</a>
+                    <a class="nav-link" th:href="@{/filmo/artists/artists-create}" th:text="#{navbar.createArtist}">Create Artist</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()" class="nav-item">

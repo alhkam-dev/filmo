@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      lang="en">
-<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Films creator')}"></head>
+      th:lang="${#locale.language}">
+<head th:replace="~{filmo/fragments/head :: header(title = 'Filmo - Films form')}"></head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -10,19 +10,27 @@
 <main class="container my-5">
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8"><h1 class="fw-bold mb-4" th:text="#{film.creation.heading}">Create film</h1>
+            <div class="col-md-8">
+                <h1 class="fw-bold mb-4" th:text="${isEdit} ? #{film.edition.heading} : #{film.creation.heading}">Create
+                    film</h1>
                 <hr class="mb-4">
 
-                <div class="alert alert-success" role="alert" th:if="${movieSuccessMessage}">
+                <div class="alert alert-success" role="alert" th:if="${filmCreationSuccessMessage}">
                     <span th:text="#{film.creation.success.message}">Film registered successfully!</span>
                 </div>
 
-                <div class="alert alert-danger" role="alert" th:if="${movieCreationError}">
+                <div class="alert alert-danger" role="alert" th:if="${filmCreationError}">
                     <span th:text="#{film.creation.error.message}">An error occurred during creation</span>
                 </div>
+                <div class="alert alert-danger" role="alert" th:if="${filmEditError}">
+                    <span th:text="#{film.edition.error.message}">An error occurred during edition</span>
+                </div>
 
-                <form th:action="@{/films/films-create}" th:object="${filmCreationDTO}" method="POST"
+                <form th:action="${isEdit} ? @{/filmo/films/films-edit/{id}(id=*{id})} : @{/filmo/films/films-create}"
+                      th:object="${filmFormDTO}" method="POST"
                       enctype="multipart/form-data">
+
+                    <input type="hidden" th:if="${isEdit}" th:field="*{id}">
 
                     <div class="row mb-3 align-items-center">
                         <label for="title" class="col-sm-3 col-form-label required-label"
@@ -60,7 +68,7 @@
                             <div th:if="${#lists.isEmpty(directors)}"
                                  class="form-control bg-light text-muted small py-2">
                                 <span th:text="#{film.creation.text.noDirectorsAvailable}">No directors available.</span>
-                                <a th:href="@{/artists/artists-create}" class="fw-bold text-decoration-none"
+                                <a th:href="@{/filmo/artists/artists-create}" class="fw-bold text-decoration-none"
                                    th:text="#{film.creation.link.createDirector}">Create a director first</a>
                             </div>
 
@@ -89,7 +97,7 @@
 
                             <div th:if="${#lists.isEmpty(actors)}" class="form-control bg-light text-muted small py-2">
                                 <span th:text="#{film.creation.text.noActorsAvailable}">No actors available.</span>
-                                <a th:href="@{/artists/artists-create}" class="fw-bold text-decoration-none"
+                                <a th:href="@{/filmo/artists/artists-create}" class="fw-bold text-decoration-none"
                                    th:text="#{film.creation.link.createActor}">Create an actor first</a>
                             </div>
 
@@ -99,10 +107,16 @@
                     </div>
 
                     <div class="row mb-4 align-items-center">
-                        <label for="poster" class="col-sm-3 col-form-label required-label"
+                        <label for="poster" class="col-sm-3 col-form-label pt-1 ' + (${isEdit} ? '' : 'required-label')"
                                th:text="#{film.creation.label.poster}">Poster</label>
                         <div class="col-sm-6">
                             <input type="file" id="poster" th:field="*{poster}" class="form-control" accept="image/*">
+
+                            <div th:if="${isEdit}" class="form-text text-muted mt-1"
+                                 th:text="#{film.edition.text.posterHelp}">
+                                Leave empty to keep the current poster.
+                            </div>
+
                             <div class="text-danger small mt-1" th:if="${#fields.hasErrors('poster')}"
                                  th:errors="*{poster}"></div>
                         </div>
@@ -110,7 +124,8 @@
 
                     <div class="row">
                         <div class="col-sm-6 offset-sm-3">
-                            <button type="submit" class="btn btn-primary px-4" th:text="#{film.creation.btn.send}">
+                            <button type="submit" class="btn btn-primary px-4"
+                                    th:text="${isEdit} ? #{film.edition.btn.send} : #{film.creation.btn.send}">
                                 Send
                             </button>
                         </div>

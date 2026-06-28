@@ -28,49 +28,50 @@ public class CustomErrorController implements ErrorController {
     Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
     Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
     Locale locale = LocaleContextHolder.getLocale();
-    String metodoHttp = request.getMethod();
+    String methodHttp = request.getMethod();
 
-    String errorTipo = "Error HTTP";
-    String motivoDetalle = "";
+    String errorType = "Error HTTP";
+    String motiveDetails = "";
 
     // Si el servidor nos dice que es un 404
     if (status != null && status.toString().equals("404")) {
-      errorTipo = "Error HTTP 404 - Not Found";
-      motivoDetalle = messageSource.getMessage("error.motivo.404", null, locale);
+      errorType = "HTTP Error 404 - Not Found";
+      motiveDetails = messageSource.getMessage("error.motive.404", null, locale);
     }
     // Si es un error 500 u otro código donde SÍ ha explotado el código Java
     else if (throwable != null) {
-      errorTipo = "Error HTTP " + (status != null ? status.toString() : "500");
-      motivoDetalle = throwable.getMessage();
+      errorType = "HTTP Error " + (status != null ? status.toString() : "500");
+      motiveDetails = throwable.getMessage();
     }
     // Cualquier otro error genérico
     else {
-      errorTipo = "Error HTTP " + (status != null ? status.toString() : "Indeterminado");
-      motivoDetalle = messageSource.getMessage("error.motivo.desconocido", null, locale);
+      errorType = "HTTP Error " + (status != null ? status.toString() : "Undetermined");
+      motiveDetails = messageSource.getMessage("error.motive.unknown", null, locale);
     }
 
     String forwardUri = (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
-    String urlCompleta;
+    String url;
 
     if (forwardUri != null) {
-      String esquema = request.getScheme();
-      String servidor = request.getServerName();
-      int puerto = request.getServerPort();
+      String scheme = request.getScheme();
+      String server = request.getServerName();
+      int port = request.getServerPort();
 
       // Si es puerto 80 o 443 estándar, no hace falta pintarlo, pero para desarrollo con 8080 sí
-      String puertoStr = (puerto == 80 || puerto == 443) ? "" : ":" + puerto;
+      String puertoStr = (port == 80 || port == 443) ? "" : ":" + port;
 
-      urlCompleta = esquema + "://" + servidor + puertoStr + forwardUri;
+      url = scheme + "://" + server + puertoStr + forwardUri;
     } else {
       // Salvavidas por si no viene del forward de Tomcat
-      urlCompleta = request.getRequestURL().toString();
+      url = request.getRequestURL().toString();
     }
 
-    ErrorDTO errorDto = ErrorDTO.builder()
-            .url(urlCompleta)
-            .exception(errorTipo)
-            .motivo(motivoDetalle)
-            .metodo(metodoHttp)
+    ErrorDTO errorDto =
+        ErrorDTO.builder()
+            .url(url)
+            .exception(errorType)
+            .motive(motiveDetails)
+            .method(methodHttp)
             .build();
 
     model.addAttribute("error", errorDto);
