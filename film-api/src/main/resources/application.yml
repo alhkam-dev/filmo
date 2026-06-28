@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3308/films
+    username: db
+    password: db
+  lifecycle:
+    timeout-per-shutdown-phase: 2s
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+server:
+  port: 8085
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.results: TRACE
+
+application:
+  jwt:
+    secret: RxmgLW5HLjX9vpXHZwwgUlEEf3fs5fBC
+    duration: PT1H
+  security:
+      username: filmo
+      password: "{bcrypt}$2a$12$j3TOENfLUhDslfuqqafjwOPlb6u6eXYG3Vi8Wu2mfEUc7pJ.Tvuni" #password= "password-filmo"
