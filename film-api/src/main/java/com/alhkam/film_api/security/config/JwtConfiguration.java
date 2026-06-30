@@ -1,5 +1,6 @@
-package com.alhkam.film_api.config;
+package com.alhkam.film_api.security.config;
 
+import com.alhkam.film_api.security.properties.JwtConfigurationProperties;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -29,13 +30,13 @@ public class JwtConfiguration {
   public NimbusJwtEncoder nimbusJwtEncoder() {
     return new NimbusJwtEncoder(
         new ImmutableSecret<>(
-            new SecretKeySpec(jwtConfigurationProperties.secret().getBytes(), "HMAC")));
+            new SecretKeySpec(jwtConfigurationProperties.secret().getBytes(), "HmacSHA256")));
   }
 
   @Bean
   public NimbusJwtDecoder nimbusJwtDecoder() {
     return NimbusJwtDecoder.withSecretKey(
-            new SecretKeySpec(jwtConfigurationProperties.secret().getBytes(), "HMAC"))
+            new SecretKeySpec(jwtConfigurationProperties.secret().getBytes(), "HmacSHA256"))
         .build();
   }
 }

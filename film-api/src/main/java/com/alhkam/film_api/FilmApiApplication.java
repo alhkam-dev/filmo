@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FilmApiApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(FilmApiApplication.class);
+    SpringApplication.run(FilmApiApplication.class, args);
   }
 }

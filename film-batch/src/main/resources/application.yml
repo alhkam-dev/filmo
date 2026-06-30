@@ -1,5 +1,14 @@
-filmweb:
-  api:
-    username: filmo-batch-client
-    password: filmobatch!
-    url: http://localhost:8080/filmo/films
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3308/films
+    username: db
+    password: db
+  main:
+    web-application-type: none
+  batch:
+    job:
+      enabled: true
+
+filmo:
+  batch:
+    output-path: ../film-app-batch-files/

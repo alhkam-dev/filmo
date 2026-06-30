@@ -1,4 +1,4 @@
-package com.alhkam.film_api.config;
+package com.alhkam.film_api.security.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

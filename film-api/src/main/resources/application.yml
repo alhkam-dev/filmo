@@ -23,5 +23,7 @@ application:
     secret: RxmgLW5HLjX9vpXHZwwgUlEEf3fs5fBC
     duration: PT1H
   security:
-      username: filmo
-      password: "{bcrypt}$2a$12$j3TOENfLUhDslfuqqafjwOPlb6u6eXYG3Vi8Wu2mfEUc7pJ.Tvuni" #password= "password-filmo"
+    users:
+      - username: filmo-client
+        password: "{bcrypt}$2a$12$j3TOENfLUhDslfuqqafjwOPlb6u6eXYG3Vi8Wu2mfEUc7pJ.Tvuni" #password= "password-filmo"
+        authorities: read-resource, write-resource

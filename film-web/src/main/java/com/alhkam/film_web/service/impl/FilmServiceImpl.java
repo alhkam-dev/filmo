@@ -7,6 +7,8 @@ import com.alhkam.film_web.domain.User;
 import com.alhkam.film_web.dto.FilmDetailsDTO;
 import com.alhkam.film_web.dto.FilmFormDTO;
 import com.alhkam.film_web.dto.FilmPreviewDTO;
+import com.alhkam.film_web.rating_api.dto.RatingAverageResponseDTO;
+import com.alhkam.film_web.rating_api.facade.RatingApiFacade;
 import com.alhkam.film_web.repository.*;
 import com.alhkam.film_web.service.FilmService;
 import java.io.IOException;
@@ -37,7 +39,7 @@ public class FilmServiceImpl implements FilmService {
   private final PosterRepository posterRepository;
   private final ArtistRepository artistRepository;
   private final UserRespository userRespository;
-  private final RatingRepository ratingRepository;
+  private final RatingApiFacade ratingApiFacade;
 
   @Value("${filmo.posters.upload-dir}")
   private String uploadDir;
@@ -187,13 +189,19 @@ public class FilmServiceImpl implements FilmService {
 
     UUID posterResourceId = film.getPoster() != null ? film.getPoster().getResourceId() : null;
 
-    Optional<Double> avgScoreOptional = ratingRepository.getAverageScoreByFilmId(id);
-    String avgRating =
-        avgScoreOptional
-            .map(
-                avgScore ->
-                    BigDecimal.valueOf(avgScore).setScale(2, RoundingMode.CEILING).toString())
-            .orElse("--");
+    String avgRating = "--";
+    try {
+      RatingAverageResponseDTO avgResponse = ratingApiFacade.getFilmRatingAverage(id);
+
+      if (avgResponse != null && avgResponse.ratings() > 0) {
+        avgRating =
+            BigDecimal.valueOf(avgResponse.average())
+                .setScale(2, RoundingMode.CEILING)
+                .toString();
+      }
+    } catch (Exception e) {
+      log.warn("Could not retrieve average rating from film-api for filmId: {}", id, e);
+    }
 
     return FilmDetailsDTO.builder()
         .id(film.getId())
