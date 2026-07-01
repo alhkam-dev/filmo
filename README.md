@@ -37,7 +37,7 @@ Follow these steps using your preferred GUI client (DBeaver, HeidiSQL,...):
 * The DB username and password is `db`/`db`
 1. Connect to the `films` database using the credentials provided above.
 2. Open and execute the **`001-upgrade.sql`** script (located in src/main/resources/scripts/databases) to generate all tables and relationships.
-3. Open and execute the **`002-upgrade.sql`** script (located in src/main/resources/scripts/databases) to insert mandatory system roles (`USER`, `ADMIN`) and test users.
+3. Open and execute the **`002-upgrade.sql`** script (located in src/main/resources/scripts/databases) to insert mandatory system roles (`USER`, `ADMIN`) and the admin user.
 
 
 ## Running the Application
@@ -53,12 +53,13 @@ The following will launch the service on the port `:8085`
 ```bash
   cd film-api
 ```
+
 2. Run the application
 ```bash
   mvn spring-boot:run
 ````
 
-The following will launch the service on the port `:8080`
+After that, execute the following steps. It will launch the service on the port `:8080`
 1. Move to the `film-web` module:
 ```bash
   cd film-web
@@ -146,3 +147,51 @@ Retrieves the average score and the total number of ratings accumulated by a fil
 * **Success Response (200 OK):** Returns a `RatingAverageResponseDTO` JSON object.
 * **Error Responses:**
   * `401 Unauthorized`: Invalid or expired JWT token.
+
+
+---
+
+# FILMO - BATCH PROCESS
+Its primary objective is to efficiently and incrementally export the movie catalog into a flat CSV file.
+
+### CONTENT
+The `exportFilmsJob` consists of a single Step:
+
+1. **Reader (`JdbcCursorItemReader`):** Fetches movies from the MariaDB database. It applies a filter using a `LEFT JOIN` with the audit log table, selecting only the films that have never been exported before.
+2. **Writer (`FlatFileItemWriter`):** Writes the movie records into a file (`films-exports.csv`).
+3. **Listener (`ItemWriteListener` + `StepExecutionListener`):** Once a chunk of movies is successfully written to the CSV file, the listener triggers and notifies the business service (`FilmExportService`) to handle the audit logging.
+
+### 📊 Audit Log Table (`film_export_log`)
+Each exported movie is recorded with the following fields to prevent reprocessing during subsequent executions:
+* `id`: Unique identifier for the log entry.
+* `job_id`: Spring Batch execution instance ID.
+* `film_id`: ID of the exported movie.
+* `exported_at`: Timestamp of when the processing took place.
+
+---
+
+### 🚀 Execution Instructions
+
+#### 1. Package the Project
+Generate the executable `.jar` file by running the following command in the module's root directory:
+```bash
+  mvn clean package
+```
+
+#### 2. Manual execution
+Once compiled, you can launch the process directly from the target folder inside the module:
+```bash
+  java -jar target/filmo-batch-1.0.jar
+```
+
+
+#### 2. Run with Maven (Development Mode)
+If you want to run the process directly from the source code without manually packaging the JAR file.
+1. Move to the `film-batch` module:
+```bash
+  cd film-batch
+```
+2. Run the application
+```bash
+  mvn spring-boot:run
+````
