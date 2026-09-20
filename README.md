@@ -195,3 +195,7 @@ If you want to run the process directly from the source code without manually pa
 ```bash
   mvn spring-boot:run
 ````
+
+## ⚖️ License
+
+This project is open-source and available under the [MIT License](https://opensource.org).
